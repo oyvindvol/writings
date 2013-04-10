@@ -1,2 +1,2 @@
-writings
+Blog posts
 ========

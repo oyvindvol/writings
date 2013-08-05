@@ -43,6 +43,7 @@ CustomTableViewCell.m
 
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
     CGSize expectedSize = [_heading.text boundingRectWithSize:CGSizeMake(151, 104) options:(NSStringDrawingUsesLineFragmentOrigin) attributes:@{NSFontAttributeName: _heading.font} context:nil].size;
     _heading.frame = CGRectMake(136, 8, 151, expectedSize.height);
     [self addSubView:_heading];

@@ -19,7 +19,7 @@ CustomTableViewCell.h
 ```objective-c
 @interface CustomTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) IBOutlet UILabel *heading;
+@property (nonatomic, strong) UILabel *heading;
 @property (nonatomic, strong) IBOutlet UIImageView *image;
 
 @end

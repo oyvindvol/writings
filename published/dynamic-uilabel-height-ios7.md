@@ -22,7 +22,6 @@ CustomTableViewCell.h
 @interface CustomTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *heading;
-@property (nonatomic, strong) UIImageView *image;
 
 @end
 ```
@@ -38,7 +37,6 @@ CustomTableViewCell.m
     self = [super initWithCoder:aDecoder];
     if (self) {
         _heading = [[UILabel alloc] init];
-        _image = [[UIImageView alloc] init];
     }
     return self;
 }
@@ -61,7 +59,6 @@ And the UITableViewController
 {
     CustomTableViewCell *cell = (CustomTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"]; 
     cell.heading.text = @"Some long text...";
-    cell.image.image = [UIImage imageNamed:@"someImage"];
     
     return cell;
 }

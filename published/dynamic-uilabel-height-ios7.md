@@ -1,26 +1,28 @@
 # Dynamic UILabel height in iOS 7
 
-After struggeling with increasing the height of my UILabel in a UITableViewCell dynamically according to the amount of
+After struggling with increasing the height of my UILabel in a UITableViewCell dynamically according to the amount of
 text inside it, i finally found a (simple) solution to this. 
 
 ## `sizeWithFont:constrainedToSize:lineBreakMode` is deprecated
 First of all, the way I used to solve this by using `sizeWithFont:constrainedToSize:lineBreakMode` to return me a
-`CGSize` object with height and width properties, is deprecated from iOS 7. The way to do it now is sending the 
+`CGSize` object with height and width properties, is deprecated in iOS 7. The way to do it now is sending the 
 `boundingRectWithSize:options:attributes:context` message to the UILabel in question, returning a `CGRect` object with
-a `CGSize` property containing the height and with of the UILabel.
+a `CGSize` property containing the expected height and with of the UILabel.
 
 ## Let the cell implementation do the resizing
 Previously, I have always done the operation of resizing labels in cells within the view controller implementation in the
-UITableViewControllerDelegate method `tableView:cellForRowAtIndexPath`. This has worked fine in the past, but
-somehow this was not working for me in iOS 7. Instead, I went inside my custom UITableViewCell subclass I had created for
-my table view cells, and overrided `layoutSubviews` to set the height of the UILabel.
+UITableViewControllerDelegate method `tableView:cellForRowAtIndexPath`. However, I think the proper way to implement it,
+is by making the custom cell implementation do the resizing and layout of its UILabel instance. Also, I have experienced 
+problems with resizing if I use Storyboards and `IBOutlet`. The code below shows how I implemented it without using 
+a `IBOutlet` in my storyboard, just placing the frame where I know I want my UILabel to appear in the UITableViewCell. 
+I overrode `layoutSubViews:` in my custom subclass:
 
 CustomTableViewCell.h
 ```objective-c
 @interface CustomTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UILabel *heading;
-@property (nonatomic, strong) IBOutlet UIImageView *image;
+@property (nonatomic, strong) UIImageView *image;
 
 @end
 ```
@@ -50,4 +52,17 @@ CustomTableViewCell.m
 }
 
 @end
+```
+
+And the UITableViewController
+
+```objective-c
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CustomTableViewCell *cell = (CustomTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:@"CustomCell"]; 
+    cell.heading.text = @"Some long text...";
+    cell.image.image = [UIImage imageNamed:@"someImage"];
+    
+    return cell;
+}
 ```
